@@ -140,16 +140,28 @@ input[type=number] {
     display: flex;
     justify-content: space-around;
     margin: 10px 0;
+    flex-wrap: wrap;
 }
 
 .baget-item {
-    width: 135px;
+    width: 15%;
+    min-width: 135px;
     height: 135px;
     border: 5px solid #ccc;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.baget-item img{
+
 }
 
 .baget-item:hover {
     cursor: pointer;
+}
+
+.selected {
     border: 5px solid red;
 }
 
@@ -168,6 +180,8 @@ input[type=number] {
 }
 
 .baget-container {
+    width: 600px;
+    height: 400px;
     box-sizing: content-box;
     position: relative;
     display: flex;
@@ -184,14 +198,14 @@ input[type=number] {
     z-index: 0;
 }
 
-.baget-container .bottom::after {
+.baget-container .bottom .after {
     content: '';
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background: url('images/baget1.jpeg') 0 0 repeat-x;
+    background: 0 0 repeat-x;
     background-size: contain;
     transform: scale(1, -1);
 }
@@ -203,7 +217,7 @@ input[type=number] {
     right: 0;
     height: 30px;
     z-index: 0;
-    background: url('images/baget1.jpeg') repeat-x;
+    background: repeat-x;
     background-size: contain;
 }
 
@@ -217,7 +231,7 @@ input[type=number] {
     transform-origin: 0 0;
     transform: rotate(-45deg);
     z-index: 10;
-    background: url('images/2.jpg') 0 0 repeat-y;
+    background: 0 0 repeat-y;
     background-size: contain;
 }
 
@@ -233,14 +247,14 @@ input[type=number] {
     z-index: 10;
 }
 
-.baget-container .right::after {
+.baget-container .right .after {
     content: '';
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background: url('images/2.jpg') 0 0 repeat-y;
+    background: 0 0 repeat-y;
     background-size: contain;
     transform: scale(-1, 1);
 }
@@ -252,8 +266,6 @@ input[type=number] {
     right: 0;
     transform-origin: 100% 0;
     transform: rotate(-45deg);
-    /* height: 283px;
-    width: 283px; */
     overflow: hidden;
     z-index: 20;
 }
@@ -265,15 +277,13 @@ input[type=number] {
     left: 0;
     transform-origin: 0 0;
     transform: rotate(45deg);
-    /* height: 283px;
-    width: 283px; */
     overflow: hidden;
     z-index: 20;
 }
 
 
 img {
-    max-width: 100%; /* This rule is very important, please do not ignore this! */
+    max-width: 100%; 
 }
 
 #canvas {
@@ -296,8 +306,6 @@ img {
 .croppedImg {
     display: block;
     position: absolute;
-    /* top: 0;
-    left: 0; */
     z-index: -10;
     max-width: 600px;
     max-height: 400px;

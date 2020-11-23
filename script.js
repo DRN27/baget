@@ -5,6 +5,8 @@ const app = new Vue({
         bagetWidth: 0,
         bagetHeight: 0,
         borderWidth: 4,
+        horImg: '',
+        vertImg: '',
         sideContainerWidth: '',
         widthScale: 1,
         heightScale: 1,
@@ -20,7 +22,105 @@ const app = new Vue({
         croppedImgHeight: 0,
         croppedImgSrc: '',
         bagetMaterial: 'Ольха',
-        blockInputs: false
+        blockInputs: false,
+        bagetsList: [
+            {
+                id: 1,
+                preview: 'images/baget1.jpeg',
+                horImg: 'url("images/baget1.jpeg")',
+                vertImg: 'url("images/baget1-1.jpg")',
+                borderWidth: 4,
+                selected: true
+            },
+            {
+                id: 2,
+                preview: 'images/baget2.jpeg',
+                horImg: 'url("images/baget2.jpeg")',
+                vertImg: 'url("images/baget2-1.png")',
+                borderWidth: 3,
+                selected: false
+            },
+            {
+                id: 3,
+                preview: 'images/baget3.jpeg',
+                horImg: 'url("images/baget3.jpeg")',
+                vertImg: 'url("images/baget3-1.png")',
+                borderWidth: 5,
+                selected: false
+            },
+            {
+                id: 4,
+                preview: 'images/baget1.jpeg',
+                horImg: 'url("images/baget1.jpeg")',
+                vertImg: 'url("images/baget1-1.jpg")',
+                borderWidth: 4,
+                selected: false
+            },
+            {
+                id: 5,
+                preview: 'images/baget2.jpeg',
+                horImg: 'url("images/baget2.jpeg")',
+                vertImg: 'url("images/baget2-1.png")',
+                borderWidth: 3,
+                selected: false
+            },
+            {
+                id: 6,
+                preview: 'images/baget3.jpeg',
+                horImg: 'url("images/baget3.jpeg")',
+                vertImg: 'url("images/baget3-1.png")',
+                borderWidth: 5,
+                selected: false
+            },
+            {
+                id: 7,
+                preview: 'images/baget1.jpeg',
+                horImg: 'url("images/baget1.jpeg")',
+                vertImg: 'url("images/baget1-1.jpg")',
+                borderWidth: 4,
+                selected: false
+            },
+            {
+                id: 8,
+                preview: 'images/baget2.jpeg',
+                horImg: 'url("images/baget2.jpeg")',
+                vertImg: 'url("images/baget2-1.png")',
+                borderWidth: 3,
+                selected: false
+            },
+            {
+                id: 9,
+                preview: 'images/baget3.jpeg',
+                horImg: 'url("images/baget3.jpeg")',
+                vertImg: 'url("images/baget3-1.png")',
+                borderWidth: 5,
+                selected: false
+            },
+            {
+                id: 10,
+                preview: 'images/baget1.jpeg',
+                horImg: 'url("images/baget1.jpeg")',
+                vertImg: 'url("images/baget1-1.jpg")',
+                borderWidth: 4,
+                selected: false
+            },
+            {
+                id: 11,
+                preview: 'images/baget2.jpeg',
+                horImg: 'url("images/baget2.jpeg")',
+                vertImg: 'url("images/baget2-1.png")',
+                borderWidth: 3,
+                selected: false
+            },
+            {
+                id: 12,
+                preview: 'images/baget3.jpeg',
+                horImg: 'url("images/baget3.jpeg")',
+                vertImg: 'url("images/baget3-1.png")',
+                borderWidth: 5,
+                selected: false
+            }
+        ]
     },
     methods: {
         uploadImg() {
@@ -180,10 +280,20 @@ const app = new Vue({
             this.croppedImgSrc = croppedImg.src;
             this.cropMode = true;
             this.blockInputs = false;
+        },
+
+        selectBaget(item) {
+            this.bagetsList.forEach(el => {
+                el.selected = false;
+            });
+            item.selected = true;
+            this.borderWidth = this.sideScale(item.borderWidth, Math.min(this.heightScale, this.widthScale));
+            this.horImg = item.horImg;
+            this.vertImg = item.vertImg;
         }
     },
     mounted() {
-
-    },
-
+        this.horImg = this.bagetsList[0].horImg,
+        this.vertImg = this.bagetsList[0].vertImg
+    }
 });

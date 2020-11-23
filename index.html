@@ -36,13 +36,17 @@
             </div>
 
             <div v-if="emptyMode || cropMode" class="baget-container" :style="{width: bagetWidth + 'px', height: bagetHeight + 'px'}">
-                <div class="top" ref="top" :style="{height: borderWidth + 'px'}"></div>
+                <div class="top" ref="top" :style="{height: borderWidth + 'px', 'background-image': `${horImg}`}"></div>
                 <div class="right-container" :style="{width: sideContainerWidth + 'px', height: sideContainerWidth + 'px'}">
-                    <div class="right" :style="{width: borderWidth + 'px'}"></div>  
+                    <div class="right" :style="{width: borderWidth + 'px'}">
+                        <div class="after" :style="{'background-image': `${vertImg}`}"></div>
+                    </div>  
                 </div>
-                <div class="bottom" ref="bottom" :style="{height: borderWidth + 'px'}"></div>
+                <div class="bottom" ref="bottom" :style="{height: borderWidth + 'px'}">
+                    <div class="after" :style="{'background-image': `${horImg}`}"></div>
+                </div>
                 <div class="left-container" :style="{width: sideContainerWidth + 'px', height: sideContainerWidth + 'px'}">
-                    <div class="left" :style="{width: borderWidth + 'px'}"></div>
+                    <div class="left" :style="{width: borderWidth + 'px', 'background-image': `${vertImg}`}"></div>
                 </div>
                 <img class="img" ref="cropBaget" class="cropBaget" id="cropBaget">
             </div>
@@ -77,20 +81,14 @@
             </div>
             <div class="bagets-container">
                 <div class="bagets-container_row">
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                </div>
-                <div class="bagets-container_row">
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
-                    <div class="baget-item"></div>
+                    <div 
+                        class="baget-item" 
+                        v-for="item in bagetsList"
+                        @click="selectBaget(item)"
+                        v-bind:class="{selected: item.selected}"
+                    > 
+                        <img :src="item.preview" alt="">
+                    </div>
                 </div>
             </div>
         </div>
