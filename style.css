@@ -168,6 +168,8 @@ input[type=number] {
 }
 
 .baget-container {
+    width: 600px;
+    height: 400px;
     box-sizing: content-box;
     position: relative;
     display: flex;
@@ -273,7 +275,7 @@ input[type=number] {
 
 
 img {
-    max-width: 100%; /* This rule is very important, please do not ignore this! */
+    max-width: 100%; 
 }
 
 #canvas {
@@ -296,8 +298,6 @@ img {
 .croppedImg {
     display: block;
     position: absolute;
-    /* top: 0;
-    left: 0; */
     z-index: -10;
     max-width: 600px;
     max-height: 400px;
