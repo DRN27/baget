@@ -133,22 +133,27 @@ input[type=number] {
 }
 
 .bagets-container {
-
+    padding: 0 25px;
 }
 
 .bagets-container_row {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     margin: 10px 0;
     flex-wrap: wrap;
 }
 
+.bagets-container_item-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+}
+
 .baget-item {
-    width: 15%;
-    min-width: 135px;
+    width: 135px;
     height: 135px;
     border: 5px solid #ccc;
-    margin-bottom: 10px;
+    margin: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -283,7 +288,7 @@ input[type=number] {
 
 
 img {
-    max-width: 100%; 
+    max-width: 100%;
 }
 
 #canvas {
@@ -312,5 +317,34 @@ img {
 }
 
 .cropBaget {
-    object-fit: contain;
+    object-fit: cover;
+    /* border: 1px solid red;
+    position: absolute;
+    z-index: 999;
+    top: calc(50% - height/2);
+    left: calc(50% - width/2); */
+}
+
+@media screen and (min-width: 1100px) {
+    .bagets-container_item-wrapper {
+        width: 16.66%;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .bagets-container_item-wrapper {
+        width: 14.28%;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .bagets-container_item-wrapper {
+        width: 12.5%;
+    }
+}
+
+@media screen and (min-width: 2200px) {
+    .bagets-container_item-wrapper {
+        width: 8.33%;
+    }
 }

@@ -48,7 +48,7 @@
                 <div class="left-container" :style="{width: sideContainerWidth + 'px', height: sideContainerWidth + 'px'}">
                     <div class="left" :style="{width: borderWidth + 'px', 'background-image': `${vertImg}`}"></div>
                 </div>
-                <img class="img" ref="cropBaget" class="cropBaget" id="cropBaget">
+                <img class="cropBaget" ref="cropBaget" id="cropBaget">
             </div>
             <div class="description" v-if="cropMode || (this.startHeight >= 10 && this.startWidth >= 10)">
                 <p>Стоимость рамки составит 270 рублей.</p>
@@ -80,14 +80,19 @@
                 <p>Онлайн расчет стоимости рамки</p>
             </div>
             <div class="bagets-container">
-                <div class="bagets-container_row">
+                <div class="bagets-container_row" ref="bagetContainer" id="bagetContainer">
                     <div 
-                        class="baget-item" 
+                        class="bagets-container_item-wrapper"
                         v-for="item in bagetsList"
-                        @click="selectBaget(item)"
-                        v-bind:class="{selected: item.selected}"
-                    > 
-                        <img :src="item.preview" alt="">
+                    >
+                        <div 
+                            class="baget-item"
+                            @click="selectBaget(item)"
+                            
+                            v-bind:class="{selected: item.selected}"
+                        > 
+                            <img :src="item.preview" alt="">
+                        </div>
                     </div>
                 </div>
             </div>
