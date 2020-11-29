@@ -2,27 +2,21 @@ const app = new Vue({
     el: '#app',
     data: {
         uploadedImgSrc: '',
+        isDrawBaget: false,
+        blockInputs: false,
+        cropImgMode: false,
+        userWidth: '',
+        userHeight: '',
+        bagetMaterial: 'Ольха',
+        croppedImg: {},
         bagetWidth: 0,
         bagetHeight: 0,
-        borderWidth: 4,
-        horImg: '',
-        vertImg: '',
-        sideContainerWidth: '',
-        widthScale: 1,
-        heightScale: 1,
-        hiddenWidth: 0,
-        hiddenHeight: 0,
-        startWidth: '',
-        startHeight: '',
-        emptyMode: false,
-        canvas: null,
-        display: true,
-        cropMode: false,
-        croppedImgWidth: 0,
-        croppedImgHeight: 0,
-        croppedImgSrc: '',
-        bagetMaterial: 'Ольха',
-        blockInputs: false,
+        borderWidth: 0,
+        imgHeight: 0,
+        imgWidth: 0,
+        sideContainerWidth: 0,
+        scale: 0,
+        selectedBagetItem: null,
         bagetsList: [
             {
                 id: 1,
@@ -30,6 +24,7 @@ const app = new Vue({
                 horImg: 'url("images/baget1.jpeg")',
                 vertImg: 'url("images/baget1-1.jpg")',
                 borderWidth: 4,
+                indent: 1,
                 selected: true
             },
             {
@@ -38,6 +33,7 @@ const app = new Vue({
                 horImg: 'url("images/baget2.jpeg")',
                 vertImg: 'url("images/baget2-1.png")',
                 borderWidth: 3,
+                indent: 0.5,
                 selected: false
             },
             {
@@ -46,6 +42,7 @@ const app = new Vue({
                 horImg: 'url("images/baget3.jpeg")',
                 vertImg: 'url("images/baget3-1.png")',
                 borderWidth: 5,
+                indent: 1.3,
                 selected: false
             },
             {
@@ -54,6 +51,7 @@ const app = new Vue({
                 horImg: 'url("images/baget1.jpeg")',
                 vertImg: 'url("images/baget1-1.jpg")',
                 borderWidth: 4,
+                indent: 1,
                 selected: false
             },
             {
@@ -62,6 +60,7 @@ const app = new Vue({
                 horImg: 'url("images/baget2.jpeg")',
                 vertImg: 'url("images/baget2-1.png")',
                 borderWidth: 3,
+                indent: 0.5,
                 selected: false
             },
             {
@@ -70,14 +69,15 @@ const app = new Vue({
                 horImg: 'url("images/baget3.jpeg")',
                 vertImg: 'url("images/baget3-1.png")',
                 borderWidth: 5,
+                indent: 1.3,
                 selected: false
-            },
-            {
+            },{
                 id: 7,
                 preview: 'images/baget1.jpeg',
                 horImg: 'url("images/baget1.jpeg")',
                 vertImg: 'url("images/baget1-1.jpg")',
                 borderWidth: 4,
+                indent: 1,
                 selected: false
             },
             {
@@ -86,6 +86,7 @@ const app = new Vue({
                 horImg: 'url("images/baget2.jpeg")',
                 vertImg: 'url("images/baget2-1.png")',
                 borderWidth: 3,
+                indent: 0.5,
                 selected: false
             },
             {
@@ -94,6 +95,7 @@ const app = new Vue({
                 horImg: 'url("images/baget3.jpeg")',
                 vertImg: 'url("images/baget3-1.png")',
                 borderWidth: 5,
+                indent: 1.3,
                 selected: false
             },
             {
@@ -102,6 +104,7 @@ const app = new Vue({
                 horImg: 'url("images/baget1.jpeg")',
                 vertImg: 'url("images/baget1-1.jpg")',
                 borderWidth: 4,
+                indent: 1,
                 selected: false
             },
             {
@@ -110,6 +113,7 @@ const app = new Vue({
                 horImg: 'url("images/baget2.jpeg")',
                 vertImg: 'url("images/baget2-1.png")',
                 borderWidth: 3,
+                indent: 0.5,
                 selected: false
             },
             {
@@ -118,6 +122,7 @@ const app = new Vue({
                 horImg: 'url("images/baget3.jpeg")',
                 vertImg: 'url("images/baget3-1.png")',
                 borderWidth: 5,
+                indent: 1.3,
                 selected: false
             }
         ]
@@ -127,11 +132,10 @@ const app = new Vue({
             this.$refs.upload.click();
         },
 
-        showImg(event) {
+        async showImg(event) {
             if (event.target.files) {
-                this.uploadedImgSrc = URL.createObjectURL(event.target.files[0]);
-                
-                setTimeout(()=> {
+                this.uploadedImgSrc =  await URL.createObjectURL(event.target.files[0]);
+                setTimeout(() => {
                     const img = this.$refs.uploadedImg;
                     const croppedImg = this.$refs.croppedImg;
 
@@ -142,158 +146,130 @@ const app = new Vue({
                             croppedImg.src = canvas.toDataURL("image/png");
                         },
                     });
-                }, 1)
+                this.blockInputs = true;
+                }, 1);
             }
-            this.blockInputs = true;
         },
-
-        setWidth(event) {
-            if (!this.blockInputs) {
-                if (this.startWidth >= 10 && this.startWidth <= 600) {
-                    if (this.cropMode) {
-                        const croppedImg = this.$refs.cropBaget;
-                        // потом подставлять динамическое значение
-                        this.borderWidth = 4;
-                        this.bagetHeight = Math.round(this.croppedImgHeight * this.startWidth / this.croppedImgWidth);
-                        this.startHeight = Math.round(this.bagetHeight);
-                        this.bagetWidth = this.startWidth;
-                        this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
-                        this.emptyMode = true;
-                        this.heightScale = this.scale(this.bagetHeight, 400, 'height');
-                        this.widthScale = this.scale(this.bagetWidth, 600, 'width');
-                        this.bagetWidth = this.sideScale(this.bagetWidth, Math.min(this.heightScale, this.widthScale));
-                        this.bagetHeight = this.sideScale(this.bagetHeight, Math.min(this.heightScale, this.widthScale));
-                        this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
-                        this.borderWidth = this.sideScale(this.borderWidth, Math.min(this.heightScale, this.widthScale));
-                        croppedImg.height = this.bagetHeight - 2 * this.borderWidth + 2;
-                        croppedImg.width = this.bagetWidth - 2 * this.borderWidth + 2;
-                        croppedImg.src = this.croppedImgSrc;
-                    } else {
-                        if (this.startWidth === '' && this.startHeight === '') {
-                            this.emptyMode = false;
-                        } else {
-                            this.emptyMode = true;
-                            // потом подставлять динамическое значение
-                            this.borderWidth = 4;
-                            this.startWidth = +event.target.value;
-                            this.widthScale = this.scale(+this.startWidth, 600, 'width');
-                            if (this.heightScale > 1 && this.widthScale > 1) {
-                                this.bagetWidth = this.sideScale(+this.startWidth, Math.min(this.heightScale, this.widthScale));
-                                this.bagetHeight = this.sideScale(+this.startHeight, Math.min(this.heightScale, this.widthScale));
-                                this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
-                                this.borderWidth = this.sideScale(this.borderWidth, Math.min(this.heightScale, this.widthScale));
-                            } else if (this.bagetHeight > 0){
-                                this.bagetWidth = this.startWidth;
-                                this.bagetHeight = this.startHeight;
-                                this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
+        crop() {
+            const croppedImg = this.$refs.croppedImg;
+            this.croppedImg.width = croppedImg.width;
+            this.croppedImg.height = croppedImg.height;
+            this.croppedImg.src = croppedImg.src;
+            this.blockInputs = false;
+            this.cropImgMode = true;
+            setTimeout(() => {
+                const img = this.$refs.cropBagetImg;
+                img.width = this.croppedImg.width;
+                img.height = this.croppedImg.height;
+                img.src = this.croppedImg.src;
+            },1);
+        },
+        setWidth() {
+            if (!this.blockInputs && +this.userWidth >= 0) {
+                if (+this.userWidth <= 600) {
+                    if (+this.userWidth >= 10) {
+                        if (this.cropImgMode) {
+                            this.userHeight = Math.round(this.croppedImg.height * this.userWidth / this.croppedImg.width);
+                            if (this.userHeight > 400) {
+                                this.userHeight = 400;
+                                this.userWidth = Math.round(this.croppedImg.width * this.userHeight / this.croppedImg.height);
                             }
+                            this.countBagetParameters();
+                        } else if (this.userHeight > 9) {
+                            this.isDrawBaget = true;
+                            this.countBagetParameters();
                         }
                     }
+                } else {
+                    this.userWidth = 600;
                 }
             } else {
-                this.startWidth = '';
+                this.userWidth = '';
             }
         },
-
-        setHeight(event) {
-            if (!this.blockInputs) {
-                if (this.startHeight >= 10 && this.startHeight <= 400) {
-                    if (this.cropMode) {
-                        const croppedImg = this.$refs.cropBaget;
-                        // потом подставлять динамическое значение
-                        this.borderWidth = 4;
-                        this.bagetWidth = Math.round(this.croppedImgWidth * this.startHeight / this.croppedImgHeight);
-                        this.startWidth = Math.round(this.bagetWidth);
-                        this.bagetHeight = this.startHeight;
-                        this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
-                        this.emptyMode = true;
-                        this.heightScale = this.scale(this.bagetHeight, 400, 'height');
-                        this.widthScale = this.scale(this.bagetWidth, 600, 'width');
-                        this.bagetWidth = this.sideScale(this.bagetWidth, Math.min(this.heightScale, this.widthScale));
-                        this.bagetHeight = this.sideScale(this.bagetHeight, Math.min(this.heightScale, this.widthScale));
-                        this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
-                        this.borderWidth = this.sideScale(this.borderWidth, Math.min(this.heightScale, this.widthScale));
-                        croppedImg.height = this.bagetHeight - (2 * this.borderWidth) + 2;
-                        croppedImg.width = this.bagetWidth - (2 * this.borderWidth) + 2;
-                        croppedImg.src = this.croppedImgSrc;
-                        this.$forceUpdate();
-                    } else {
-                        if (this.startWidth === '' && this.startHeight === '') {
-                            this.emptyMode = false;
-                        } else {
-                            this.emptyMode = true;
-                            // потом подставлять динамическое значение
-                            this.borderWidth = 4;
-                            this.startHeight = +event.target.value;
-                            this.heightScale = this.scale(+this.startHeight, 400, 'height');
-                            if (this.widthScale > 1 && this.heightScale > 1) {
-                                this.bagetWidth = this.sideScale(+this.startWidth, Math.min(this.heightScale, this.widthScale));
-                                this.bagetHeight = this.sideScale(+this.startHeight, Math.min(this.heightScale, this.widthScale));
-                                this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
-                                this.borderWidth = this.sideScale(this.borderWidth, Math.min(this.heightScale, this.widthScale));
-                            } else  if (this.bagetWidth > 0) {
-                                this.bagetWidth = this.startWidth;
-                                this.bagetHeight = this.startHeight;
-                                this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
+        setHeight() {
+            if (!this.blockInputs && +this.userHeight >= 0) {
+                if (+this.userHeight <= 400) {
+                    if (+this.userHeight >= 10) {
+                        if (this.cropImgMode) {
+                            this.userWidth = Math.round(this.croppedImg.width * this.userHeight / this.croppedImg.height);
+                            if (this.userWidth > 600) {
+                                this.userWidth = 600;
+                                this.userHeight = Math.round(this.croppedImg.height * this.userWidth / this.croppedImg.width);
                             }
+                            this.countBagetParameters();
+                        } else if (this.userWidth > 9) {
+                            this.isDrawBaget = true;
+                            this.countBagetParameters();
                         }
                     }
+                } else {
+                    this.userHeight = 400;
                 }
             } else {
-                this.startHeight = '';
+                this.userHeight = '';
             }
         },
-
-        scale(value, max, scaleName) {
-            if (value === 0) {
-                return 1;
-            } else {
+        countBagetParameters() {
+            this.uploadedImgSrc = '';
+            const width = this.userWidth;
+            const height = this.userHeight;
+            this.countScale(width, height);
+            this.bagetWidth = this.countScaledValue(width, this.scale);
+            this.bagetHeight = this.countScaledValue(height, this.scale);
+            this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
+            this.borderWidth = this.countScaledValue(this.selectedBagetItem.borderWidth, this.scale);
+            if (this.cropImgMode) {
+                const imgWidth = width - (2 * this.selectedBagetItem.borderWidth) + (2 * this.selectedBagetItem.indent);
+                const imgHeight = height - (2 * this.selectedBagetItem.borderWidth) + (2 * this.selectedBagetItem.indent);
+                this.imgWidth = this.countScaledValue(imgWidth, this.scale);
+                this.imgHeight = this.countScaledValue(imgHeight, this.scale);
+            }
+        },
+        countEmptyBaget() {
+            const width = this.userWidth;
+            const height = this.userHeight;
+            this.countScale(width, height);
+            this.bagetWidth = this.countScaledValue(width, this.scale);
+            this.bagetHeight = this.countScaledValue(height, this.scale);
+            this.sideContainerWidth = Math.sqrt((this.bagetHeight * this.bagetHeight) / 2);
+            this.borderWidth = this.countScaledValue(this.selectedBagetItem.borderWidth, this.scale);
+        },
+        countScale(width, height) {
+            const widthScale = this.scaleFunction(width, 600);
+            const heightScale = this.scaleFunction(height, 400);
+            this.scale = Math.min(widthScale, heightScale);
+        },
+        scaleFunction(value, max) {
+            // if (value === 0) {
+            //     return 0;
+            // } else {
                 let count = 1;
                 for (value; value * 2 <= max; ) {
                     count++;
                     value = value * 2;
                 }
                 return count;
-            }
+            // }
         },
-
-        sideScale(startValue, scale) {
-            if (startValue === 0) {
-                return 0;
-            } else {
-                for (let i = 1; i < scale; i++) {
-                    startValue = startValue * 2;
-                }
-                return startValue;
+        countScaledValue(startValue, scale) {
+            for (let i = 1; i < scale; i++) {
+                startValue = startValue * 2;
             }
+            return startValue;
         },
-
-        crop() {
-            this.display = false;
-            const croppedImg = this.$refs.croppedImg;
-            this.croppedImgHeight = croppedImg.height;
-            this.croppedImgWidth = croppedImg.width;
-            if (this.croppedImgHeight > this.croppedImgWidth) {
-                this.croppedImgHeight = 400;
-                this.croppedImgWidth = this.croppedImgWidth * 400 / croppedImg.height;
-            }
-            this.croppedImgSrc = croppedImg.src;
-            this.cropMode = true;
-            this.blockInputs = false;
-        },
-
         selectBaget(item) {
             this.bagetsList.forEach(el => {
                 el.selected = false;
             });
             item.selected = true;
-            this.borderWidth = this.sideScale(item.borderWidth, Math.min(this.heightScale, this.widthScale));
-            this.horImg = item.horImg;
-            this.vertImg = item.vertImg;
+            this.selectedBagetItem = item;
+            if (this.cropImgMode) {
+                this.countBagetParameters();
+            }
         }
-    },
+    }, 
     mounted() {
-        this.horImg = this.bagetsList[0].horImg,
-        this.vertImg = this.bagetsList[0].vertImg
+        this.selectedBagetItem = this.bagetsList[0];
     }
 });

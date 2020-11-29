@@ -14,58 +14,62 @@
             <p>Онлайн расчет стоимости рамки</p>
         </div>
         <div class="baget-block">
-            <div v-if="!emptyMode">
-                <div v-if="!uploadedImgSrc" class="centred-col">
+            <div v-if="!isDrawBaget">
+                <div class="centred-col" v-if="!uploadedImgSrc && !cropImgMode">
                     <div class="upload-img" v-on:click="uploadImg()"></div>
                     <div class="description">
                         <p>Загрузите вашу картину или просто заполните параметры <br> вашей будущей рамки</p>
                     </div>
                 </div>
-                <div v-if="uploadedImgSrc" class="centred-col">
+                <div class="centred-col" v-if="uploadedImgSrc">
                     <div class="cropp-container">
-                        <div class="uploaded-img" v-if="display">
+                        <div class="uploaded-img" v-if="!cropImgMode">
                             <img v-bind:src="uploadedImgSrc" ref="uploadedImg" id="uploadedImg">
                         </div>
-                        <img ref="croppedImg" class="croppedImg">
+                        <img ref="croppedImg" class="croppedImg" v-if="uploadedImgSrc">
                     </div>
-                    <div class="description" v-if="!cropMode">
+                    <div class="description" v-if="!cropImgMode">
                         <p>Выделите поле картины и нажмите кнопку «Кадрировать»</p>
                         <div class="btn" v-on:click="crop">Кадрировать</div>
                     </div>
                 </div>
             </div>
 
-            <div v-if="emptyMode || cropMode" class="baget-container" :style="{width: bagetWidth + 'px', height: bagetHeight + 'px'}">
-                <div class="top" ref="top" :style="{height: borderWidth + 'px', 'background-image': `${horImg}`}"></div>
-                <div class="right-container" :style="{width: sideContainerWidth + 'px', height: sideContainerWidth + 'px'}">
-                    <div class="right" :style="{width: borderWidth + 'px'}">
-                        <div class="after" :style="{'background-image': `${vertImg}`}"></div>
-                    </div>  
+            <div v-if="cropImgMode || isDrawBaget" class="baget-container-wrapper">
+                <div class="baget-container" :style="{width: bagetWidth + 'px', height: bagetHeight + 'px'}">
+                    <div class="top" ref="top" :style="{height: borderWidth + 'px', 'background-image': `${selectedBagetItem.horImg}`}"></div>
+                    <div class="right-container" :style="{width: sideContainerWidth + 'px', height: sideContainerWidth + 'px'}">
+                        <div class="right" :style="{width: borderWidth + 'px'}">
+                            <div class="after" :style="{'background-image': `${selectedBagetItem.vertImg}`}"></div>
+                        </div>  
+                    </div>
+                    <div class="bottom" ref="bottom" :style="{height: borderWidth + 'px'}">
+                        <div class="after" :style="{'background-image': `${selectedBagetItem.horImg}`}"></div>
+                    </div>
+                    <div class="left-container" :style="{width: sideContainerWidth + 'px', height: sideContainerWidth + 'px'}">
+                        <div class="left" :style="{width: borderWidth + 'px', 'background-image': `${selectedBagetItem.vertImg}`}"></div>
+                    </div>
+                    <img class="cropBaget" ref="cropBagetImg" :style="{width: imgWidth + 'px', height: imgHeight + 'px'}">
                 </div>
-                <div class="bottom" ref="bottom" :style="{height: borderWidth + 'px'}">
-                    <div class="after" :style="{'background-image': `${horImg}`}"></div>
+    
+                <div class="description">
+                    <p>Стоимость рамки составит 270 рублей.</p>
+                    <p>Ширина: {{userWidth}} см, Высота: {{userHeight}} см</p>
+                    <p>Материал: {{bagetMaterial}}</p>
                 </div>
-                <div class="left-container" :style="{width: sideContainerWidth + 'px', height: sideContainerWidth + 'px'}">
-                    <div class="left" :style="{width: borderWidth + 'px', 'background-image': `${vertImg}`}"></div>
-                </div>
-                <img class="cropBaget" ref="cropBaget" id="cropBaget">
             </div>
-            <div class="description" v-if="cropMode || (this.startHeight >= 10 && this.startWidth >= 10)">
-                <p>Стоимость рамки составит 270 рублей.</p>
-                <p>Ширина: {{startWidth}} см, Высота: {{startHeight}} см</p>
-                <p>Материал: {{bagetMaterial}}</p>
-            </div>
-            
+
             <input type="file" ref="upload" class="hidden" v-on:change="showImg($event)" accept="image/*">
         </div>
+
         <div class="size-block">
             <div class="size-block_item">
                 <p>Ширина картины (см)</p>
-                <input type="number" v-on:input="setWidth($event)" v-model="startWidth">
+                <input type="number" prevval="0" v-on:input="setWidth($event)" v-model="userWidth" ref="widthInput">
             </div>
             <div class="size-block_item">
                 <p>Высота картины (см)</p>
-                <input type="number" v-on:input="setHeight($event)" v-model="startHeight">
+                <input type="number" prevval="0" v-on:input="setHeight($event)" v-model="userHeight" ref="heightInput">
             </div>
             <div class="size-block_item">
                 <p>Материал рамки</p>
@@ -75,6 +79,7 @@
                 </select>
             </div>
         </div>
+
         <div class="baget-type-block">
             <div class="baget-type-block_header">
                 <p>Онлайн расчет стоимости рамки</p>
@@ -88,7 +93,6 @@
                         <div 
                             class="baget-item"
                             @click="selectBaget(item)"
-                            
                             v-bind:class="{selected: item.selected}"
                         > 
                             <img :src="item.preview" alt="">
@@ -100,6 +104,8 @@
         <div class="price">
             <p>Рассчитать цену</p>
         </div>
+        
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -107,6 +113,5 @@
     <!-- prod -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
     <script src="script.js"></script>
-
 </body>
 </html>
