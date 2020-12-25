@@ -8,6 +8,7 @@ const app = new Vue({
         userWidth: '',
         userHeight: '',
         bagetMaterial: 'Ольха',
+        bagetСoating: 'Без покрытия',
         croppedImg: {},
         bagetWidth: 0,
         bagetHeight: 0,
@@ -16,111 +17,158 @@ const app = new Vue({
         imgWidth: 0,
         sideContainerWidth: 0,
         scale: 0,
+        price: 0,
         selectedBagetItem: null,
         bagetsList: [
             {
                 id: 1,
-                preview: 'images/baget1.jpeg',
-                horImg: 'url("images/baget1.jpeg")',
-                vertImg: 'url("images/baget1-1.jpg")',
+                preview: 'images/rams/1.jpg',
+                horImg: 'url("images/1_2.jpg")',
+                vertImg: 'url("images/1_1.jpg")',
                 borderWidth: 4,
                 indent: 1,
                 selected: true
             },
             {
                 id: 2,
-                preview: 'images/baget2.jpeg',
-                horImg: 'url("images/baget2.jpeg")',
-                vertImg: 'url("images/baget2-1.png")',
+                preview: 'images/rams/2.jpg',
+                horImg: 'url("images/2_2.jpg")',
+                vertImg: 'url("images/2_1.jpg")',
                 borderWidth: 3,
                 indent: 0.5,
                 selected: false
             },
             {
                 id: 3,
-                preview: 'images/baget3.jpeg',
-                horImg: 'url("images/baget3.jpeg")',
-                vertImg: 'url("images/baget3-1.png")',
+                preview: 'images/rams/3.jpg',
+                horImg: 'url("images/3_2.jpg")',
+                vertImg: 'url("images/3_1.jpg")',
                 borderWidth: 5,
                 indent: 1.3,
                 selected: false
             },
             {
                 id: 4,
-                preview: 'images/baget1.jpeg',
-                horImg: 'url("images/baget1.jpeg")',
-                vertImg: 'url("images/baget1-1.jpg")',
+                preview: 'images/rams/4.jpg',
+                horImg: 'url("images/4_2.jpg")',
+                vertImg: 'url("images/4_1.jpg")',
                 borderWidth: 4,
                 indent: 1,
                 selected: false
             },
             {
                 id: 5,
-                preview: 'images/baget2.jpeg',
-                horImg: 'url("images/baget2.jpeg")',
-                vertImg: 'url("images/baget2-1.png")',
+                preview: 'images/rams/5.jpg',
+                horImg: 'url("images/5_1.jpg")',
+                vertImg: 'url("images/5_2.jpg")',
                 borderWidth: 3,
                 indent: 0.5,
                 selected: false
             },
             {
                 id: 6,
-                preview: 'images/baget3.jpeg',
-                horImg: 'url("images/baget3.jpeg")',
-                vertImg: 'url("images/baget3-1.png")',
+                preview: 'images/rams/6.jpg',
+                horImg: 'url("images/6_1.jpg")',
+                vertImg: 'url("images/6_2.jpg")',
                 borderWidth: 5,
                 indent: 1.3,
                 selected: false
             },{
                 id: 7,
-                preview: 'images/baget1.jpeg',
-                horImg: 'url("images/baget1.jpeg")',
-                vertImg: 'url("images/baget1-1.jpg")',
+                preview: 'images/rams/7.jpg',
+                horImg: 'url("images/7_1.jpg")',
+                vertImg: 'url("images/7_2.jpg")',
                 borderWidth: 4,
                 indent: 1,
                 selected: false
             },
             {
                 id: 8,
-                preview: 'images/baget2.jpeg',
-                horImg: 'url("images/baget2.jpeg")',
-                vertImg: 'url("images/baget2-1.png")',
+                preview: 'images/rams/8.jpg',
+                horImg: 'url("images/8_2.jpg")',
+                vertImg: 'url("images/8_1.jpg")',
                 borderWidth: 3,
                 indent: 0.5,
                 selected: false
             },
             {
                 id: 9,
-                preview: 'images/baget3.jpeg',
-                horImg: 'url("images/baget3.jpeg")',
-                vertImg: 'url("images/baget3-1.png")',
+                preview: 'images/rams/9.jpg',
+                horImg: 'url("images/9_2.jpg")',
+                vertImg: 'url("images/9_1.jpg")',
                 borderWidth: 5,
                 indent: 1.3,
                 selected: false
             },
             {
                 id: 10,
-                preview: 'images/baget1.jpeg',
-                horImg: 'url("images/baget1.jpeg")',
-                vertImg: 'url("images/baget1-1.jpg")',
+                preview: 'images/rams/10.jpg',
+                horImg: 'url("images/10_2.jpg")',
+                vertImg: 'url("images/10_1.jpg")',
                 borderWidth: 4,
                 indent: 1,
                 selected: false
             },
             {
                 id: 11,
-                preview: 'images/baget2.jpeg',
-                horImg: 'url("images/baget2.jpeg")',
-                vertImg: 'url("images/baget2-1.png")',
+                preview: 'images/rams/11.jpg',
+                horImg: 'url("images/11_2.jpg")',
+                vertImg: 'url("images/11_1.jpg")',
                 borderWidth: 3,
                 indent: 0.5,
                 selected: false
             },
-            {
+                {
                 id: 12,
-                preview: 'images/baget3.jpeg',
-                horImg: 'url("images/baget3.jpeg")',
-                vertImg: 'url("images/baget3-1.png")',
+                preview: 'images/rams/12.jpg',
+                horImg: 'url("images/12_2.jpg")',
+                vertImg: 'url("images/12_1.jpg")',
+                borderWidth: 3,
+                indent: 0.5,
+                selected: false
+            },
+                {
+                id: 13,
+                preview: 'images/rams/13.jpg',
+                horImg: 'url("images/13_2.jpg")',
+                vertImg: 'url("images/13_1.jpg")',
+                borderWidth: 3,
+                indent: 0.5,
+                selected: false
+            },
+                {
+                id: 14,
+                preview: 'images/rams/14.jpg',
+                horImg: 'url("images/14_2.jpg")',
+                vertImg: 'url("images/14_1.jpg")',
+                borderWidth: 3,
+                indent: 0.5,
+                selected: false
+            },
+                {
+                id: 15,
+                preview: 'images/rams/15.jpg',
+                horImg: 'url("images/15_2.jpg")',
+                vertImg: 'url("images/15_1.jpg")',
+                borderWidth: 3,
+                indent: 0.5,
+                selected: false
+            },
+                {
+                id: 16,
+                preview: 'images/rams/16.jpg',
+                horImg: 'url("images/16_2.jpg")',
+                vertImg: 'url("images/16_1.jpg")',
+                borderWidth: 3,
+                indent: 0.5,
+                selected: false
+            },
+            
+            {
+                id: 17,
+                preview: 'images/rams/17.jpg',
+                horImg: 'url("images/17_2.jpg")',
+                vertImg: 'url("images/17_1.jpg")',
                 borderWidth: 5,
                 indent: 1.3,
                 selected: false
@@ -162,7 +210,7 @@ const app = new Vue({
                 img.width = this.croppedImg.width;
                 img.height = this.croppedImg.height;
                 img.src = this.croppedImg.src;
-            },1);
+            },100);
         },
         setWidth() {
             if (!this.blockInputs && +this.userWidth >= 0) {
@@ -180,8 +228,10 @@ const app = new Vue({
                             this.countBagetParameters();
                         }
                     }
+                    this.countPrice();
                 } else {
                     this.userWidth = 600;
+                    this.countPrice();
                 }
             } else {
                 this.userWidth = '';
@@ -203,8 +253,10 @@ const app = new Vue({
                             this.countBagetParameters();
                         }
                     }
+                    this.countPrice();
                 } else {
                     this.userHeight = 400;
+                    this.countPrice();
                 }
             } else {
                 this.userHeight = '';
@@ -241,16 +293,12 @@ const app = new Vue({
             this.scale = Math.min(widthScale, heightScale);
         },
         scaleFunction(value, max) {
-            // if (value === 0) {
-            //     return 0;
-            // } else {
-                let count = 1;
-                for (value; value * 2 <= max; ) {
-                    count++;
-                    value = value * 2;
-                }
-                return count;
-            // }
+            let count = 1;
+            for (value; value * 2 <= max; ) {
+                count++;
+                value = value * 2;
+            }
+            return count;
         },
         countScaledValue(startValue, scale) {
             for (let i = 1; i < scale; i++) {
@@ -264,9 +312,42 @@ const app = new Vue({
             });
             item.selected = true;
             this.selectedBagetItem = item;
-            if (this.cropImgMode) {
+            if (this.cropImgMode && this.userWidth && this.userHeight) {
                 this.countBagetParameters();
             }
+        },
+        changeCoating() {
+            this.countPrice();
+        },
+        changeMaterial() {
+            this.countPrice();
+        },
+        countPrice() {
+            let startValue = 0;
+            let priceForCentimeter = 0;
+            let priceBagetСoating = 0;
+            let perimeter = 2 * (+this.userWidth + +this.userHeight);
+            if (perimeter <= 100) {
+                if (this.bagetMaterial === 'Ольха' ) {
+                    startValue = 30;
+                    priceForCentimeter = 0.5;
+                } else if (this.bagetMaterial === 'Дуб') {
+                    startValue = 50;
+                    priceForCentimeter = 1;
+                }
+            } else {
+                if (this.bagetMaterial === 'Ольха' ) {
+                    priceForCentimeter = 0.5;
+                } else if (this.bagetMaterial === 'Дуб') {
+                    priceForCentimeter = 1;
+                }
+            }
+            if (this.bagetСoating === 'Покраска' ) {
+                priceBagetСoating = 10;
+            } else if (this.bagetСoating === 'Патина') {
+                priceBagetСoating = 20;
+            }
+            this.price = startValue + (perimeter * priceForCentimeter) + priceBagetСoating;
         }
     }, 
     mounted() {

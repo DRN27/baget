@@ -53,9 +53,9 @@
                 </div>
     
                 <div class="description">
-                    <p>Стоимость рамки составит 270 рублей.</p>
+                    <p>Стоимость рамки составит {{price}} рублей.</p>
                     <p>Ширина: {{userWidth}} см, Высота: {{userHeight}} см</p>
-                    <p>Материал: {{bagetMaterial}}</p>
+                    <p>Материал: {{bagetMaterial}}, Покрытие: {{bagetСoating}}</p>
                 </div>
             </div>
 
@@ -72,8 +72,16 @@
                 <input type="number" prevval="0" v-on:input="setHeight($event)" v-model="userHeight" ref="heightInput">
             </div>
             <div class="size-block_item">
+                <p>Покрытие</p>
+                <select v-model="bagetСoating" @change="changeCoating">
+                    <option>Без покрытия</option>
+                    <option>Покраска</option>
+                    <option>Патина</option>
+                </select>
+            </div>
+            <div class="size-block_item">
                 <p>Материал рамки</p>
-                <select v-model="bagetMaterial">
+                <select v-model="bagetMaterial" @change="changeMaterial">
                     <option>Ольха</option>
                     <option>Дуб</option>
                 </select>
@@ -108,10 +116,11 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- dev -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.9/cropper.min.js"></script>
     <!-- prod -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="script.js"></script>
 </body>
 </html>
